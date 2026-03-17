@@ -1,9 +1,9 @@
 
 ## Ver 1:
-	### Các thứ cơ bản của quản lí chi tiêu
-	### Thu nhập, chi tiêu và số dư
-	### Có lựa chọn các mục như ăn uống, lương học bổng...
-		Thêm ngày.
+ 	Các thứ cơ bản của quản lí chi tiêu.
+	Thu nhập, chi tiêu và số dư.
+	Lựa chọn các danh mục như ăn uống, lương, học bổng...
+	Thêm ngày.
 ## Ver 2:
 	Lọc danh sách chi tiêu, thu nhập theo tháng và từng danh mục.
 	Giới hạn hạn mức chi tiêu.
