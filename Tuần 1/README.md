@@ -1,4 +1,4 @@
-
+# Kế hoạch phát triển dự án 
 ## Ver 1:
  	Các thứ cơ bản của quản lí chi tiêu.
 	Thu nhập, chi tiêu và số dư.
