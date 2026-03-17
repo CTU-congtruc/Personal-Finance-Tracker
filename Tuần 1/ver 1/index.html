@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Finance Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <h1>Quản lí chi tiêu cá nhân</h1>
+      <p>Demo - Ver 1.0</p>
+    </div>
+
+    <!-- Thống kê tổng quan -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Tổng thu nhập</div>
+        <div class="stat-value income" id="total-income">0 ₫</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Tổng chi tiêu</div>
+        <div class="stat-value expense" id="total-expense">0 ₫</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Số dư</div>
+        <div class="stat-value" id="balance">0 ₫</div>
+      </div>
+    </div>
+
+    <!-- Form thêm giao dịch -->
+    <div class="form-card">
+      <div class="form-title">Thêm giao dịch mới</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="tx-name">Tên giao dịch</label>
+          <input type="text" id="tx-name" placeholder="Ví dụ: Tiền trọ tháng 3" />
+        </div>
+        <div class="form-group">
+          <label for="tx-amount">Số tiền (VNĐ)</label>
+          <input type="number" id="tx-amount" placeholder="2000000" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="tx-type">Loại</label>
+          <select id="tx-type">
+            <option value="expense">Chi tiêu</option>
+            <option value="income">Thu nhập</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="tx-category">Danh mục</label>
+          <select id="tx-category">
+            <option value="Ăn uống">Ăn uống</option>
+            <option value="Học tập">Học tập</option>
+            <option value="Đi lại">Đi lại</option>
+            <option value="Giải trí">Giải trí</option>
+            <option value="Tiền nhà">Tiền nhà</option>
+            <option value="Lương">Lương</option>
+            <option value="Học bổng">Học bổng</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="tx-date">Ngày</label>
+          <input type="date" id="tx-date" />
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="primary" onclick="addTransaction()">+ Thêm giao dịch</button>
+        <button onclick="addSample()">Thêm dữ liệu mẫu</button>
+      </div>
+    </div>
+
+    <!-- Danh sách giao dịch -->
+    <div class="list-card">
+      <div class="list-header">
+        Danh sách giao dịch
+        <span id="tx-count"></span>
+      </div>
+      <div id="tx-list">
+        <div class="empty">Chưa có giao dịch nào. Hãy thêm giao dịch đầu tiên!</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
