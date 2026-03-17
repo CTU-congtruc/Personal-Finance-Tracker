@@ -9,7 +9,7 @@
 	Giới hạn hạn mức chi tiêu.
 	Cảnh báo vượt mức chi.
 ## Ver 3:
-	Số tiền cần tiết kiệm cho tới ngày .
+	Lập kế hoạch tiết kiệm tiền cho tới thời gian mục tiêu.
 	Thêm biểu đồ để quan sát mức độ chi tiêu và thu nhập.
 	Chỉnh sửa UI, UX (thêm cả chủ đề sáng/tối).
 	
