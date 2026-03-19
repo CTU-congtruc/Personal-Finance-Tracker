@@ -1,4 +1,4 @@
-# Personal-Finance-Tracker
+# Personal Finance Tracker
 
 ## Thành viên nhóm:
 ####   1. Phan Công Trực - B2509901 - K51
