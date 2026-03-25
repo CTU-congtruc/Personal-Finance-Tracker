@@ -1,6 +1,6 @@
 # Personal Finance Tracker
 
-## Giảng viên hướng dẫn: **Bùi Võ Quốc Bảo**
+## Giảng viên hướng dẫn: *Bùi Võ Quốc Bảo*
 
 ## Thành viên nhóm:
 ###  *1. Phan Công Trực - B2509901 - K51*
