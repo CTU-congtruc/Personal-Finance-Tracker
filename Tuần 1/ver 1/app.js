@@ -1,12 +1,5 @@
-// ===========================
-// Personal Finance Tracker
-// Vòng lặp 1 - Logic cơ bản
-// ===========================
-
-// Mảng lưu danh sách giao dịch
 let transactions = [];
 
-// Icon theo danh mục
 const categoryIcons = {
   'Ăn uống': '🍜',
   'Học tập': '📚',
@@ -20,7 +13,6 @@ const categoryIcons = {
 
 // ===========================
 // Khởi tạo khi tải trang
-// ===========================
 document.addEventListener('DOMContentLoaded', function () {
   setTodayDate();
   updateStats();
@@ -35,21 +27,18 @@ function setTodayDate() {
 
 // ===========================
 // Định dạng tiền tệ VNĐ
-// ===========================
 function formatMoney(amount) {
   return new Intl.NumberFormat('vi-VN').format(Math.round(amount)) + ' ₫';
 }
 
 // ===========================
 // Tạo ID duy nhất cho giao dịch
-// ===========================
 function generateId() {
   return Date.now().toString() + Math.random().toString(36).slice(2, 7);
 }
 
 // ===========================
 // Thêm giao dịch mới
-// ===========================
 function addTransaction() {
   // Lấy dữ liệu từ form
   const name = document.getElementById('tx-name').value.trim();
@@ -99,7 +88,6 @@ function addTransaction() {
 
 // ===========================
 // Xóa giao dịch theo ID
-// ===========================
 function deleteTransaction(id) {
   if (!confirm('Bạn có chắc muốn xóa giao dịch này không?')) return;
 
@@ -115,7 +103,6 @@ function deleteTransaction(id) {
 
 // ===========================
 // Cập nhật thống kê tổng quan
-// ===========================
 function updateStats() {
   let totalIncome = 0;
   let totalExpense = 0;
@@ -147,7 +134,6 @@ function updateStats() {
 
 // ===========================
 // Render danh sách giao dịch
-// ===========================
 function renderList() {
   const listEl = document.getElementById('tx-list');
   const countEl = document.getElementById('tx-count');
@@ -197,7 +183,6 @@ function renderList() {
 
 // ===========================
 // Tránh XSS khi render HTML
-// ===========================
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
@@ -206,7 +191,6 @@ function escapeHtml(text) {
 
 // ===========================
 // Thêm dữ liệu mẫu để test
-// ===========================
 function addSample() {
   const sampleData = [
     { name: 'Học bổng tháng 3', amount: 1500000, type: 'income',  category: 'Học bổng', date: '2025-03-01' },
@@ -232,9 +216,6 @@ function addSample() {
   renderList();
 }
 
-// ===========================
-// Cho phép nhấn Enter để thêm
-// ===========================
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Enter' && e.target.id === 'tx-amount') {
     addTransaction();
