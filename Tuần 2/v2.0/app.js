@@ -1,5 +1,3 @@
-// Vòng lặp 2 – localStorage + Bộ lọc
-
 const STORAGE_KEY = 'finance_tracker_v2'; // Key lưu trong localStorage
 let transactions = []; // Mảng lưu tất cả giao dịch
 
