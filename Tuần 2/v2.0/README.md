@@ -1,10 +1,7 @@
-# Cập nhật tính năng:
+### v2.2 
+    Thêm hạn mức chi tiêu 
+    Thanh tiến trình hiển thị % đã chi
+    Cảnh báo khi vượt 80% hạn mức
+    Cảnh báo đỏ khi vượt 100% hạn mức
 
-  ### Lưu dữ liệu tự động vào "localStorage"
-  ### Tải lại dữ liệu khi mở trang
-  ### Xóa tất cả dữ liệu
-  ### Thống kê cập nhật theo bộ lọc đang chọn
-  ### Lọc giao dịch:
-  #### 1. Lọc giao dịch theo tháng
-  #### 2. Lọc giao dịch theo danh mục
-  #### 3. Lọc giao dịch theo loại (thu/chi)
+#### Note: Hạn mức lưu riêng vào localStorage
