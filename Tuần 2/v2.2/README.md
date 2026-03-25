@@ -1,4 +1,4 @@
-### v2.2 
+### Cập nhật tính năng:
     Thêm hạn mức chi tiêu 
     Thanh tiến trình hiển thị % đã chi
     Cảnh báo khi vượt 80% hạn mức
