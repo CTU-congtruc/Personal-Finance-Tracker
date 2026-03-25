@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Personal Finance Tracker </title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="header-left">
+        <h1> Quản lí chi tiêu cá nhân </h1>
+      </div>
+      <span class="badge-version">v2.2</span>
+    </div>
+
+    <!-- Tổng quan -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Tổng thu</div>
+        <div class="stat-value income" id="s-income">0 ₫</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Tổng chi</div>
+        <div class="stat-value expense" id="s-expense">0 ₫</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Số dư</div>
+        <div class="stat-value" id="s-balance">0 ₫</div>
+      </div>
+    </div>
+
+    <!-- Cảnh báo vượt giới hạn -->
+    <div class="alert-box over" id="alert-over">
+      <div class="alert-title">🚨 Đã vượt hạn mức chi tiêu!</div>
+      <ul id="alert-over-list"></ul>
+    </div>
+
+    <!-- Cảnh báo chi tiêu ( >= 80%) -->
+    <div class="alert-box warn" id="alert-warn">
+      <div class="alert-title">⚠️ Sắp đạt hạn mức (trên 80%)</div>
+      <ul id="alert-warn-list"></ul>
+    </div>
+
+    <!-- giới hạn chi tiêu -->
+    <div class="section-card">
+      <div class="section-title">Hạn mức chi tiêu theo danh mục</div>
+
+      <!-- Danh sách hạn mức hiện tại -->
+      <div id="budget-list">
+        <div class="no-budget">Chưa có hạn mức nào. Thêm hạn mức bên dưới!</div>
+      </div>
+
+      <!-- Form thêm hạn mức mới -->
+      <div class="budget-add">
+        <div class="budget-add-title">Thêm hạn mức mới</div>
+        <div class="budget-add-row">
+          <div class="fg">
+            <label for="b-cat">Danh mục</label>
+            <select id="b-cat">
+              <option> Ăn uống </option>
+            <option> Học tập </option>
+            <option> Đi lại </option>
+            <option> Giải trí </option>
+            <option> Tiền nhà </option>
+            <option> Khác </option>
+            </select>
+          </div>
+          <div class="fg">
+            <label for="b-amount">Hạn mức (VNĐ/tháng)</label>
+            <input type="number" id="b-amount" placeholder="500000" min="0" />
+          </div>
+          <button class="primary" onclick="addBudget()">+ Thêm hạn mức</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM THÊM GIAO DỊCH -->
+    <div class="section-card">
+      <div class="section-title"> Thêm giao dịch mới </div>
+      <div class="form-grid">
+        <div class="fg full">
+          <label for="tx-name"> Tên giao dịch </label>
+          <input type="text" id="tx-name" placeholder="Ví dụ: Tiền nhà tháng 3" />
+        </div>
+        <div class="fg">
+          <label for="tx-amount"> Số tiền </label>
+          <input type="number" id="tx-amount" placeholder="500000" min="0" />
+        </div>
+        <div class="fg">
+          <label for="tx-type"> Loại </label>
+          <select id="tx-type">
+            <option value="expense"> Chi tiêu </option>
+            <option value="income"> Thu nhập </option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="tx-cat"> Danh mục </label>
+          <select id="tx-cat">
+            <option> Ăn uống </option>
+            <option> Học tập </option>
+            <option> Đi lại </option>
+            <option> Giải trí </option>
+            <option> Tiền nhà </option>
+            <option> Lương </option>
+            <option> Học bổng </option>
+            <option> Khác </option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="tx-date"> Ngày </label>
+          <input type="date" id="tx-date" />
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="primary" onclick="addTransaction()"> + Thêm giao dịch </button>
+        <button onclick="addSample()"> Thêm dữ liệu mẫu </button>
+        <button class="danger" onclick="clearAll()"> Xóa tất cả </button>
+      </div>
+      <div class="save-bar" id="save-bar"></div>
+    </div>
+
+    <!-- BỘ LỌC -->
+    <div class="section-card">
+      <div class="section-title"> Bộ lọc </div>
+      <div class="filter-row">
+        <div class="fg">
+          <label for="f-month"> Tháng </label>
+          <select id="f-month">
+            <option value=""> Tất cả tháng </option>
+            <option value="01"> Tháng 1 </option>
+            <option value="02"> Tháng 2 </option>
+            <option value="03"> Tháng 3 </option>
+            <option value="04"> Tháng 4 </option>
+            <option value="05"> Tháng 5 </option>
+            <option value="06"> Tháng 6 </option>
+            <option value="07"> Tháng 7 </option>
+            <option value="08"> Tháng 8 </option>
+            <option value="09"> Tháng 9 </option>
+            <option value="10"> Tháng 10 </option>
+            <option value="11"> Tháng 11 </option>
+            <option value="12"> Tháng 12 </option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="f-cat"> Danh mục </label>
+          <select id="f-cat">
+            <option value=""> Tất cả danh mục </option>
+            <option> Ăn uống</option>
+            <option> Học tập</option>
+            <option> Đi lại </option>
+            <option> Giải trí</option>
+            <option> Tiền nhà </option>
+            <option> Lương </option>
+            <option> Học bổng</option>
+            <option> Khác</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="f-type">Loại</label>
+          <select id="f-type">
+            <option value=""> Tất cả loại </option>
+            <option value="income"> Thu nhập </option>
+            <option value="expense"> Chi tiêu </option>
+          </select>
+        </div>
+        <button onclick="resetFilter()">Xóa bộ lọc</button>
+      </div>
+    </div>
+
+    <!-- DANH SÁCH GIAO DỊCH -->
+    <div class="list-card">
+      <div class="list-header">
+        <span>Danh sách giao dịch</span>
+        <span class="list-meta" id="list-meta"></span>
+      </div>
+      <div id="tx-list">
+        <div class="empty"> Chưa có giao dịch nào. Hãy thêm giao dịch đầu tiên!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
