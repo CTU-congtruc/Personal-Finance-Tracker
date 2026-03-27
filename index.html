@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lí chi tiêu cá nhân</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div>
+          <div class="brand-name">Quản lí chi tiêu</div>
+          <div class="brand-sub">PCter-Finance</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-section="overview" onclick="switchSection('overview')">
+          <span class="nav-icon">◈</span>
+          <span>Tổng quan</span>
+        </a>
+        <a class="nav-item" data-section="budget" onclick="switchSection('budget')">
+          <span class="nav-icon">◎</span>
+          <span>Hạn mức chi tiêu</span>
+        </a>
+        <a class="nav-item" data-section="charts" onclick="switchSection('charts')">
+          <span class="nav-icon">◬</span>
+          <span>Biểu đồ thống kê</span>
+        </a>
+        <a class="nav-item" data-section="transactions" onclick="switchSection('transactions')">
+          <span class="nav-icon">≡</span>
+          <span>Danh sách giao dịch</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a class="nav-item" data-section="settings" onclick="switchSection('settings')">
+          <span class="nav-icon">⚙</span>
+          <span>Giao diện</span>
+        </a>
+        <div class="sidebar-version">v3.0</div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="topbar">
+        <div class="topbar-title" id="topbar-title">Tổng quan</div>
+        <div class="topbar-right">
+          <div class="save-bar" id="save-bar"></div>
+          <button class="btn-sample" onclick="addSample()">Thêm dữ liệu mẫu</button>
+        </div>
+      </div>
+
+      <div class="alert-box over" id="alert-over" style="display:none">
+        <div>
+          <div class="alert-title">Đã vượt hạn mức chi tiêu!</div>
+          <ul id="alert-over-list"></ul>
+        </div>
+      </div>
+      <div class="alert-box warn" id="alert-warn" style="display:none">
+        <div>
+          <div class="alert-title">Sắp đạt hạn mức (trên 80%)</div>
+          <ul id="alert-warn-list"></ul>
+        </div>
+      </div>
+
+      <!-- ===== SECTION: TỔNG QUAN ===== -->
+      <section class="section-panel active" id="section-overview">
+        <div class="stats-grid">
+          <div class="stat-card income-card">
+            <div class="stat-icon">↑</div>
+            <div class="stat-body">
+              <div class="stat-label">Thu nhập</div>
+              <div class="stat-value income" id="s-income">0 ₫</div>
+            </div>
+          </div>
+          <div class="stat-card expense-card">
+            <div class="stat-icon">↓</div>
+            <div class="stat-body">
+              <div class="stat-label">Chi tiêu</div>
+              <div class="stat-value expense" id="s-expense">0 ₫</div>
+            </div>
+          </div>
+          <div class="stat-card balance-card">
+            <div class="stat-icon">◈</div>
+            <div class="stat-body">
+              <div class="stat-label">Số dư</div>
+              <div class="stat-value" id="s-balance">0 ₫</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Quick add transaction form -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"> Thêm giao dịch mới</span>
+          </div>
+          <div class="form-grid">
+            <div class="fg full">
+              <label for="tx-name"> Tên giao dịch</label>
+              <input type="text" id="tx-name" placeholder="Ví dụ: Tiền nhà tháng 3" />
+            </div>
+            <div class="fg">
+              <label for="tx-amount"> Số tiền </label>
+              <input type="number" id="tx-amount" placeholder="500000" min="0" />
+            </div>
+            <div class="fg">
+              <label for="tx-type">Loại</label>
+              <select id="tx-type">
+                <option value="expense"> Chi tiêu</option>
+                <option value="income"> Thu nhập</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="tx-cat"> Danh mục </label>
+              <select id="tx-cat">
+                <option> Ăn uống </option>
+                <option> Học tập </option>
+                <option> Đi lại </option>
+                <option> Giải trí </option>
+                <option> Tiền nhà </option>
+                <option> Lương </option>
+                <option> Học bổng </option>
+                <option> Khác </option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="tx-date">Ngày</label>
+              <input type="date" id="tx-date" />
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="addTransaction()"> Thêm giao dịch </button>
+            <button class="btn-ghost btn-danger" onclick="clearAll()"> Xóa tất cả </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Giao dịch gần đây</span>
+            <button class="btn-link" onclick="switchSection('transactions')">Xem tất cả →</button>
+          </div>
+          <div id="tx-list-preview"></div>
+        </div>
+      </section>
+
+      <!--  HẠN MỨC -->
+      <section class="section-panel" id="section-budget">
+        <div id="budget-list-wrap">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Hạn mức chi tiêu</span>
+            </div>
+            <div id="budget-list"><div class="empty-state">Chưa có hạn mức nào.</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Thêm hạn mức mới</span>
+          </div>
+          <div class="budget-add-row">
+            <div class="fg">
+              <label for="b-cat"> Danh mục</label>
+              <select id="b-cat">
+                <option> Ăn uống </option>
+                <option> Học tập </option>
+                <option> Đi lại </option>
+                <option> Giải trí </option>
+                <option> Tiền nhà </option>
+                <option> Khác </option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="b-amount">Hạn mức </label>
+              <input type="number" id="b-amount" placeholder="500000" min="0" />
+            </div>
+            <button class="btn-primary" onclick="addBudget()">Thêm hạn mức</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- BIỂU ĐỒ  -->
+      <section class="section-panel" id="section-charts">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Thống kê chi tiêu</span>
+            <div class="chart-tabs">
+              <button class="chart-tab active" onclick="switchTab('bar')" id="tab-bar">Biểu đồ cột</button>
+              <button class="chart-tab" onclick="switchTab('pie')" id="tab-pie">Biểu đồ tròn</button>
+            </div>
+          </div>
+
+          <div class="chart-controls">
+            <div class="fg">
+              <label for="c-year">Năm</label>
+              <select id="c-year"></select>
+            </div>
+            <div class="fg">
+              <label for="c-month">Tháng</label>
+              <select id="c-month">
+                <option value="">Cả năm</option>
+                <option value="01">Tháng 1</option><option value="02">Tháng 2</option>
+                <option value="03">Tháng 3</option><option value="04">Tháng 4</option>
+                <option value="05">Tháng 5</option><option value="06">Tháng 6</option>
+                <option value="07">Tháng 7</option><option value="08">Tháng 8</option>
+                <option value="09">Tháng 9</option><option value="10">Tháng 10</option>
+                <option value="11">Tháng 11</option><option value="12">Tháng 12</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="c-type">Loại</label>
+              <select id="c-type">
+                <option value="expense">Chi tiêu</option>
+                <option value="income">Thu nhập</option>
+                <option value="both">Cả hai</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="chart-wrap" id="chart-bar-wrap">
+            <div class="chart-empty" id="chart-bar-empty" style="display:none">Không có dữ liệu.</div>
+            <canvas id="chart-bar"></canvas>
+          </div>
+          <div class="chart-pie-wrap" id="chart-pie-wrap" style="display:none">
+            <div class="chart-empty" id="chart-pie-empty" style="display:none">Không có dữ liệu.</div>
+            <div class="pie-layout">
+              <div class="pie-canvas-wrap"><canvas id="chart-pie"></canvas></div>
+              <div class="pie-legend" id="pie-legend"></div>
+            </div>
+          </div>
+
+          <div class="chart-summary" id="chart-summary"></div>
+        </div>
+      </section>
+
+      <!-- DANH SÁCH GIAO DỊCH -->
+      <section class="section-panel" id="section-transactions">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Bộ lọc</span>
+          </div>
+          <div class="filter-row">
+            <div class="fg">
+              <label for="f-month">Tháng</label>
+              <select id="f-month">
+                <option value="">Tất cả tháng</option>
+                <option value="01">Tháng 1</option><option value="02">Tháng 2</option>
+                <option value="03">Tháng 3</option><option value="04">Tháng 4</option>
+                <option value="05">Tháng 5</option><option value="06">Tháng 6</option>
+                <option value="07">Tháng 7</option><option value="08">Tháng 8</option>
+                <option value="09">Tháng 9</option><option value="10">Tháng 10</option>
+                <option value="11">Tháng 11</option><option value="12">Tháng 12</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="f-cat">Danh mục</label>
+              <select id="f-cat">
+                <option value="">Tất cả danh mục</option>
+                <option>Ăn uống</option><option>Học tập</option><option>Đi lại</option>
+                <option>Giải trí</option><option>Tiền nhà</option><option>Lương</option>
+                <option>Học bổng</option><option>Khác</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="f-type">Loại</label>
+              <select id="f-type">
+                <option value="">Tất cả loại</option>
+                <option value="income">Thu nhập</option>
+                <option value="expense">Chi tiêu</option>
+              </select>
+            </div>
+            <button class="btn-ghost" onclick="resetFilter()">Xóa bộ lọc</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Danh sách giao dịch</span>
+            <span class="list-meta" id="list-meta"></span>
+          </div>
+          <div id="tx-list"></div>
+        </div>
+      </section>
+
+      <!-- GIAO DIỆN -->
+      <section class="section-panel" id="section-settings">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Tùy chọn giao diện</span>
+          </div>
+          <div class="settings-grid">
+            <div class="setting-item">
+              <div class="setting-label">Chủ đề màu sắc</div>
+              <div class="theme-options">
+                <button class="theme-btn active" onclick="setTheme('default')" data-theme="default">
+                  <span class="theme-preview default-theme"></span> Mặc định
+                </button>
+                <button class="theme-btn" onclick="setTheme('dark')" data-theme="dark">
+                  <span class="theme-preview dark-theme"></span> Tối
+                </button>
+                <button class="theme-btn" onclick="setTheme('warm')" data-theme="warm">
+                  <span class="theme-preview warm-theme"></span> Ấm
+                </button>
+              </div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-label">Thao tác dữ liệu</div>
+              <div class="btn-row">
+                <button class="btn-primary" onclick="addSample()"> Thêm dữ liệu mẫu</button>
+                <button class="btn-ghost btn-danger" onclick="clearAll()"> Xóa tất cả giao dịch</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+  <script src="chart.js"></script>
+
+  <script>
+    // chuyển section
+    const sectionTitles = {
+      overview: 'Tổng quan',
+      categories: 'Danh mục thu chi',
+      budget: 'Hạn mức chi tiêu',
+      charts: 'Biểu đồ thống kê',
+      transactions: 'Danh sách giao dịch',
+      settings: 'Giao diện'
+    };
+
+    function switchSection(id) {
+      document.querySelectorAll('.section-panel').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.getElementById('section-' + id).classList.add('active');
+      document.querySelector('[data-section="' + id + '"]').classList.add('active');
+      document.getElementById('topbar-title').textContent = sectionTitles[id];
+      if (id === 'charts') renderCharts(transactions);
+      if (id === 'categories') renderCategoryStats();
+    }
+
+    function renderCategoryStats() {
+      const el = document.getElementById('category-stats');
+      const spent = getSpentByCategory();
+      const allCats = [...new Set(transactions.map(t => t.category))];
+      if (allCats.length === 0) {
+        el.innerHTML = '<div class="empty-state">Chưa có dữ liệu danh mục.</div>';
+        return;
+      }
+      const incByCat = {}, expByCat = {};
+      transactions.forEach(t => {
+        if (t.type === 'income') incByCat[t.category] = (incByCat[t.category] || 0) + t.amount;
+        else expByCat[t.category] = (expByCat[t.category] || 0) + t.amount;
+      });
+      const cats = [...new Set([...Object.keys(incByCat), ...Object.keys(expByCat)])];
+      el.innerHTML = cats.map(cat => {
+        const inc = incByCat[cat] || 0;
+        const exp = expByCat[cat] || 0;
+        const icon = categoryIcons[cat] || '📌';
+        return `
+          <div class="cat-stat-row">
+            <div class="cat-stat-icon">${icon}</div>
+            <div class="cat-stat-info">
+              <div class="cat-stat-name">${cat}</div>
+              <div class="cat-stat-amounts">
+                ${inc > 0 ? `<span class="chip-income">+${formatMoney(inc)}</span>` : ''}
+                ${exp > 0 ? `<span class="chip-expense">-${formatMoney(exp)}</span>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ds gần nhất
+    const _origRenderList = window.renderList;
+    function renderListPreview() {
+      const el = document.getElementById('tx-list-preview');
+      if (!el) return;
+      const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+      if (sorted.length === 0) {
+        el.innerHTML = '<div class="empty-state">Chưa có giao dịch nào.</div>';
+        return;
+      }
+      el.innerHTML = sorted.map(t => {
+        const icon = categoryIcons[t.category] || '📌';
+        const dateStr = new Date(t.date + 'T00:00:00').toLocaleDateString('vi-VN');
+        const sign = t.type === 'income' ? '+' : '-';
+        return `
+          <div class="tx-item">
+            <div class="tx-icon ${t.type}">${icon}</div>
+            <div class="tx-info">
+              <div class="tx-name">${escapeHtml(t.name)} <span class="badge ${t.type}">${t.category}</span></div>
+              <div class="tx-meta">${dateStr}</div>
+            </div>
+            <div class="tx-amount ${t.type}">${sign}${formatMoney(t.amount)}</div>
+            <button class="tx-del" onclick="deleteTransaction('${t.id}')" title="Xóa">×</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // đổi theme
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.theme === theme);
+      });
+      localStorage.setItem('fin_theme', theme);
+    }
+
+    // ghi đè cập nhật
+    const _baseRender = render;
+    window.renderList = function(filtered) {
+      _origRenderList && _origRenderList(filtered);
+      renderListPreview();
+    };
+
+    // theme
+    const savedTheme = localStorage.getItem('fin_theme') || 'default';
+    setTheme(savedTheme);
+  </script>
+
+
+</body>
+</html>
